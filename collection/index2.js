@@ -2,7 +2,7 @@ const SneaksAPI = require('sneaks-api');
 const sneaks = new SneaksAPI();
 const fs = require('fs');
 
-const styleIDs = ["DZ6755-100", "FB8825-111", "387324-01", "bb650rwg", "cz8065-100-lyf-book", "dn2487-002", "u9060wcg", "u9060bcg", "bb650rwc",
+const styleIDs = ["DZ6755-100", "F8825-111", "387324-01", "bb650rwg", "cz8065-100-lyf-book", "dn2487-002", "u9060wcg", "u9060bcg", "bb650rwc",
 "dv6994-001",  "m2002rup", "dx9999-600", "dz4865-503", "dc1975-005", "uxc72al", "uxc72au", "hp9260", "377586-01", "db2179-109",
 "377612-01"];
 
@@ -46,5 +46,8 @@ styleIDs.forEach((styleID, index) => {
   // use setTimeout() to wait 1 second before calling the getProductPrices() function
   setTimeout(() => {
     getProductPrices(styleID);
-  }, index * 1000);
+  }, index * 300);
 });
+
+
+
