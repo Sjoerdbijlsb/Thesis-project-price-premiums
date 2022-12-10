@@ -1,0 +1,6 @@
+*.log
+*.aux
+*.Rhistory
+.RData
+**.Rout
+*.csv
