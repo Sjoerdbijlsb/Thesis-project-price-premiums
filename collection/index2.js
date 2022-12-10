@@ -2,7 +2,7 @@ const SneaksAPI = require('sneaks-api');
 const sneaks = new SneaksAPI();
 const fs = require('fs');
 
-const styleIDs = ["CT8012-116", "315122-111/CW2288-111", "CD0884-100"];
+const styleIDs = ["dz6755-100", "fb8825-111", "387324-01", "dc1975-005", "uxc72al"]; // removed the extra : character here
 
 //Product object includes styleID where you input it in the getProductPrices function
 //getProductPrices(styleID, callback) takes in a style ID and returns sneaker info including a price map and more images of the product
@@ -11,11 +11,11 @@ function getProductPrices(styleID) {
     console.log(product);
 
     // check if the file exists, and create an empty file if it doesn't
-    fs.access('data.json', fs.constants.F_OK, (err) => {
-      if (err) {
-        fs.writeFileSync('data.json', '{ "data": [] }');
-      }
-    });
+    fs.access('data.json', fs.constants.F_OK, function (err) {
+        if (err) {
+          fs.writeFileSync('data.json', '{ "data": [] }');
+        }
+      });
 
     // read the file and parse the JSON
     fs.readFile('data.json', 'utf8', (err, fileData) => {
