@@ -39,5 +39,16 @@ Stocxk/flightclub:
 
 
 
+url_list = ["https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=acne+studios&brand=adidas", 
+"https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=air+jordan&brand=alexander+mcqueen&brand=amiri&brand=anta",
+"https://www.goat.com/timeline/2017?brand=asics&brand=balenciaga", "https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=birkenstock&brand=bape&brand=bottega+veneta&brand=burberry&brand=chloe&brand=christian+louboutin&brand=clarks&brand=converse&brand=crocs&brand=curry+brand&brand=diadora",
+"https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=dior&brand=dolce+gabbana&brand=dr+martens&brand=ewing&brand=fear+of+god&brand=fendi&brand=fila&brand=givenchy&brand=golden+goose&brand=gucci&brand=hoka+one+one&brand=hugo+boss&brand=john+geiger&brand=kangaroos&brand=karhu&brand=lanvin&brand=li+ning&brand=louis+vuitton&brand=maison+margiela&brand=marni&brand=mizuno&brand=moncler&brand=mschf",
+"https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=new+balance", "https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=nike",
+"https://www.goat.com/timeline/2017?brand=off+white&brand=on&brand=onitsuka+tiger&brand=other&brand=pleasures&brand=prada&brand=puma",
+"https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=reebok&brand=rhude&brand=rick+owens",
+"https://www.goat.com/timeline/2017?brand=salomon&brand=saucony&brand=suicoke&brand=the+north+face&brand=timberland",
+    "https://www.goat.com/timeline/2017?brand=under+armour", "https://www.goat.com/timeline/2017?sortBy=release_date&sortOrder=ascending&brand=vans&brand=versace&brand=visvim"]
+
+
 
 
