@@ -16,7 +16,7 @@ def product_info():
     content = open('../../data/snkrtest.json', 'r').readlines() 
     counter = 0 
     with open('../../data/sneaker_info.csv', mode='a', encoding = 'utf-8', newline='') as csv_file:
-        fieldnames = ['product_name', 'brand', 'sku', 'release_date', 'nickname', 'designer', 'main_color', 'upper_material', 'category', 'technology', 'featured_in_1', 'featured_in_2', 'featured_in_3', 'price_and_size' , 'timestamp']
+        fieldnames = ['product_name', 'brand', 'sku', 'release_date', 'nickname', 'designer', 'main_color', 'upper_material', 'category', 'technology', 'featured_in_1', 'featured_in_2', 'featured_in_3', 'size', 'price', 'timestamp']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         for line in content:
@@ -126,11 +126,11 @@ def product_info():
                 print("Nickname not found")
             
 
-            timestamp = datetime.now()
-            for ps in price_and_size:
-                writer.writerow({'product_name': product_name, 'brand': brand, 'sku': sku, 'release_date': release_date, 'nickname': nickname, 'designer': designer, 'main_color': main_color, 'upper_material': upper_material, 
-                'category': category, 'technology': technology, 'featured_in_1': featured_in_1, 'featured_in_2': featured_in_2, 'featured_in_3': featured_in_3, 'price_and_size': ps['price_and_size'], 'timestamp': timestamp})
-                print('done!')
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            for shoe_info in price_and_size:
+                writer.writerow({'product_name': product_name, 'brand': brand, 'sku': sku, 'release_date': release_date, 'nickname': nickname, 
+                'designer': designer, 'main_color': main_color, 'upper_material': upper_material, 'category': category, 'technology' : technology, 'featured_in_1': featured_in_1, 
+                'featured_in_2': featured_in_2, 'featured_in_3': featured_in_3, 'size':shoe_info['size'], 'price':shoe_info['price'], 'timestamp': timestamp})
 
 product_info()
             
