@@ -53,19 +53,20 @@ def product_info():
             time.sleep(3)
             soup = BeautifulSoup(driver.page_source)
             
-        
             price_and_size = []
-            try:                                             
-                elements = soup.find_all("div", class_="SizeAndPrice__Root-sc-1w2dirf-0")
-                for element in elements:
-                    size = element.find("div", class_="SizeAndPrice__Size-sc-1w2dirf-1").text
-                    price = element.find("span", class_="SizeAndPrice__Price-sc-1w2dirf-2").text
-                    to_be_attached_price = {'size': size, 'price': price}
-                    price_and_size.append(to_be_attached_price)   
-                    
-            except: 
-                to_be_attached_price = {'size': None, 'price': None}
+            elements = soup.find_all("div", class_="SizeAndPrice__Root-sc-1w2dirf-0")
+            if elements:
+                    for element in elements:
+                        size = element.find("div", class_="SizeAndPrice__Size-sc-1w2dirf-1").text
+                        price = element.find("span", class_="SizeAndPrice__Price-sc-1w2dirf-2").text
+                        to_be_attached_price = {'size': size, 'price': price}
+                        price_and_size.append(to_be_attached_price)   
+            else:
+                size = "N/A"
+                price = "N/A"
+                to_be_attached_price = {'size': size, 'price': price}
                 price_and_size.append(to_be_attached_price)
+
                     
             # facts or atttributes of a specific shoe
             release_date = soup.find(attrs={"data-qa":"release_date_sort_text"})
