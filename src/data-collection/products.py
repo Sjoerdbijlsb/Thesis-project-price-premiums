@@ -52,31 +52,20 @@ def product_info():
             driver.get(obj['sneaker url'])
             time.sleep(3)
             soup = BeautifulSoup(driver.page_source)
-            elements = soup.find_all(class_='swiper-slide swiper-slide-duplicate')
+            
         
             price_and_size = []
-            if elements is not None:
-                try:  
-                    el = elements[0]
-                    for el in elements:
-                        attributes = str(el)
-                        attributes = attributes.replace(',', '')
-                        attr = []
-
-                        for item in re.findall(r'[>](.+?)[<]', attributes):
-                            attr.append(item) 
-                                                                        
-                except:
-                    elements = soup.find_all("div", class_="SizeAndPrice__Root-sc-1w2dirf-0")
-                    for element in elements:
-                        size = element.find("div", class_="SizeAndPrice__Size-sc-1w2dirf-1").text
-                        price = element.find("span", class_="SizeAndPrice__Price-sc-1w2dirf-2").text
-                        to_be_attached_price = {'size': size, 'price': price}
-                        price_and_size.append(to_be_attached_price)   
+            try:                                             
+                elements = soup.find_all("div", class_="SizeAndPrice__Root-sc-1w2dirf-0")
+                for element in elements:
+                    size = element.find("div", class_="SizeAndPrice__Size-sc-1w2dirf-1").text
+                    price = element.find("span", class_="SizeAndPrice__Price-sc-1w2dirf-2").text
+                    to_be_attached_price = {'size': size, 'price': price}
+                    price_and_size.append(to_be_attached_price)   
                     
-                else: 
-                    to_be_attached_price = {'size': None, 'price': None}
-                    price_and_size.append(to_be_attached_price)
+            except: 
+                to_be_attached_price = {'size': None, 'price': None}
+                price_and_size.append(to_be_attached_price)
                     
             # facts or atttributes of a specific shoe
             release_date = soup.find(attrs={"data-qa":"release_date_sort_text"})
