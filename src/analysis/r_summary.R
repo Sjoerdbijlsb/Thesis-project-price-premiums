@@ -22,3 +22,6 @@ df$release_date <- as.Date(df$release_date, format = "%m-%d-%Y")
 df$release_date <- format(df$release_date, format = "%d-%m-%Y")
 
 head(df)
+View(df)
+
+df %>% sort(release_date)
