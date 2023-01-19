@@ -9,7 +9,6 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from webdriver_manager.chrome import ChromeDriverManager
 import os
 import logging
-from retrying import retry
 
 
 # set up logging
