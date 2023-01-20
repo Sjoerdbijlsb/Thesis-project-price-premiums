@@ -4,5 +4,7 @@
 .RData
 **.Rout
 *.csv
+*.json
+*.js
 src/analysis/check_df.ipynb
 src/data-collection/Untitled.ipynb
