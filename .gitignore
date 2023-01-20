@@ -4,3 +4,5 @@
 .RData
 **.Rout
 *.csv
+src/analysis/check_df.ipynb
+src/data-collection/Untitled.ipynb
