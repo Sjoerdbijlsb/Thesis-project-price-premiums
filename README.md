@@ -1,6 +1,6 @@
-# price-premiums-fashion
+# Thesis project
 
-Research into price premiums generated from the sneaker resale market. 
+Research into limited edition sneaker market
 
 
 
