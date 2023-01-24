@@ -10,7 +10,6 @@ import requests
 from selenium.webdriver.common.by import By
 import json
 
-
 driver = webdriver.Chrome(ChromeDriverManager().install())
 url = "https://sneakernews.com/release-dates"
 driver.get(url)
@@ -20,115 +19,121 @@ button = driver.find_element(By.ID,'CybotCookiebotDialogBodyLevelButtonLevelOpti
 button.click()
 time.sleep(1)
 
-
+url_list_news = ["https://sneakernews.com/air-jordan-release-dates/", "https://sneakernews.com/adidas-yeezy-release-dates/", "https://sneakernews.com/release-dates/"] 
         
-def seed_urls():
+def seed_urls(url_list_news):
+    all_data = []
+    for url in url_list_news:
     # Load in product page via selenium
     # Wait for page to load
-    scroll_pause_time = 1  # in seconds
-    screen_height = driver.execute_script("return window.screen.height;")
-    last_height = driver.execute_script("return document.body.scrollHeight")
-    while True:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(2)
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
+        driver.get(url)
+        scroll_pause_time = 1  # in seconds
+        screen_height = driver.execute_script("return window.screen.height;")
+        last_height = driver.execute_script("return document.body.scrollHeight")
+        while True:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+            new_height = driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
 
 
-    # Extract data from page
-    html = driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
-    data = []
-
-    for el in soup.find_all(class_ = 'content-box'): 
-        # extract release date
-        release_date_element = el.select_one('.release-date')
-        if release_date_element:
-            release_date = release_date_element.get_text().strip()
-        else:
-            release_date = None
-
-        rating_element = el.select_one('.release-rating')
-        if rating_element:
-            upvotes_timeline = rating_element.get_text().strip()
-        else:
-            upvotes_timeline = None
-
-        # extract shoe name
-        shoe_name_element = el.select_one('h2 a')
-        if shoe_name_element:
-            shoe_name = shoe_name_element.get_text().strip()
-        else:
-            shoe_name = None
-
-        # extract shoe price
-        shoe_price_element = el.select_one('.release-price')
-        if shoe_price_element:
-            shoe_price = shoe_price_element.get_text().strip()
-        else:
-            shoe_price = None
-
-        page_link_element = soup.select_one('.image-box a')
-        if page_link_element:
-            page_links = page_link_element['href']
-        else:
-            page_links = None
-
-
-        post_data = el.find('div', class_='post-data')
-        style_code, region, retailers_links, footer_links = None, None, [], []
-        colorway = None
-        if post_data:
-            for p in post_data.find_all('p'):
-                if 'Color:' in p.text:
-                    colorway = p.text.split(':')[-1].strip()
-                elif 'Style Code:' in p.text:
-                    style_code = p.text.split(':')[-1].strip()
-                elif 'Region:' in p.text:
-                    region = p.text.split(':')[-1].strip()
-            release_Where_to_Buy = el.find('div', class_='release-Where-to-Buy')
-            if release_Where_to_Buy:
-                for a in release_Where_to_Buy.find_all('a'):
-                    retailers_links.append(a["href"])
-            release_footer_bottom = el.find('div', class_='release-footer-bottom')
-            if release_footer_bottom:
-                for a in release_footer_bottom.find_all('a'):
-                    footer_links.append(a["href"])
-
-
-                    
-        print('Release date:', release_date)
-        print('Shoe name:', shoe_name)
-        print('Shoe price:', shoe_price)
-        print('Colorway:', colorway)
-        print('Style code:', style_code)
-        print('Region', region)
-        print('Retailers links', retailers_links)
-        print('footer_links', footer_links)
-        print('page_links', page_links)
-        print('upvotes_timeline', upvotes_timeline)
+        # Extract data from page
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
         
+        data = []
+        for el in soup.find_all(class_ = 'content-box'): 
+            # extract release date
+            release_date_element = el.select_one('.release-date')
+            if release_date_element:
+                release_date = release_date_element.get_text().strip()
+            else:
+                release_date = None
 
-        data.append({
-        'release_date': release_date,
-        'shoe_name': shoe_name,
-        'shoe_price': shoe_price,
-        'colorway': colorway,
-        'style_code': style_code,
-        'region': region,
-        'retailers_links': retailers_links,
-        'footer_links': footer_links,
-        'page_links': page_links,
-        'upvotes_timeline': upvotes_timeline,
-    })
+            rating_element = el.select_one('.release-rating')
+            if rating_element:
+                upvotes_timeline = rating_element.get_text().strip()
+            else:
+                upvotes_timeline = None
 
-    # Write data to json file
-    with open('sneaker_news.json', 'w') as json_file:
-        json.dump(data, json_file)
+            # extract shoe name
+            shoe_name_element = el.select_one('h2 a')
+            if shoe_name_element:
+                shoe_name = shoe_name_element.get_text().strip()
+            else:
+                shoe_name = None
 
+            # extract shoe price
+            shoe_price_element = el.select_one('.release-price')
+            if shoe_price_element:
+                shoe_price = shoe_price_element.get_text().strip()
+            else:
+                shoe_price = None
+
+            page_link_element = soup.select_one('.image-box a')
+            if page_link_element:
+                page_links = page_link_element['href']
+            else:
+                page_links = None
+
+
+            post_data = el.find('div', class_='post-data')
+            style_code, region, retailers_links, footer_links = None, None, [], []
+            colorway = None
+            if post_data:
+                for p in post_data.find_all('p'):
+                    if 'Color:' in p.text:
+                        colorway = p.text.split(':')[-1].strip()
+                    elif 'Style Code:' in p.text:
+                        style_code = p.text.split(':')[-1].strip()
+                    elif 'Region:' in p.text:
+                        region = p.text.split(':')[-1].strip()
+                release_Where_to_Buy = el.find('div', class_='release-Where-to-Buy')
+                if release_Where_to_Buy:
+                    for a in release_Where_to_Buy.find_all('a'):
+                        retailers_links.append(a["href"])
+                release_footer_bottom = el.find('div', class_='release-footer-bottom')
+                if release_footer_bottom:
+                    for a in release_footer_bottom.find_all('a'):
+                        footer_links.append(a["href"])
+
+        
+            print('Release date:', release_date)
+            print('Shoe name:', shoe_name)
+            print('Shoe price:', shoe_price)
+            print('Colorway:', colorway)
+            print('Style code:', style_code)
+            print('Region', region)
+            print('Retailers links', retailers_links)
+            print('footer_links', footer_links)
+            print('page_links', page_links)
+            print('upvotes_timeline', upvotes_timeline)
             
 
-news_urls = seed_urls()
+            data.append({
+            'release_date': release_date,
+            'shoe_name': shoe_name,
+            'shoe_price': shoe_price,
+            'colorway': colorway,
+            'style_code': style_code,
+            'region': region,
+            'retailers_links': retailers_links,
+            'footer_links': footer_links,
+            'page_links': page_links,
+            'upvotes_timeline': upvotes_timeline,
+            })
+        all_data.extend(data)
+    return all_data
 
+# Modify url_list to include the desired range of years
+
+news_urls = seed_urls(url_list_news)
+
+# Write data to json file
+
+with open('sneaker_news.json', 'w', encoding = 'utf-8') as f:
+    for item in news_urls:
+        f.write(json.dumps(item))
+        f.write('\n')
