@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import requests
 from selenium.webdriver.common.by import By
-import csv
 import json
 
 
@@ -19,14 +18,13 @@ driver.get(url)
 button = driver.find_element(By.ID,'CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll')
 # Click the button
 button.click()
-time.sleep(2)
+time.sleep(1)
 
 
         
 def seed_urls():
     # Load in product page via selenium
     # Wait for page to load
-    time.sleep(2)  
     scroll_pause_time = 1  # in seconds
     screen_height = driver.execute_script("return window.screen.height;")
     last_height = driver.execute_script("return document.body.scrollHeight")
@@ -72,8 +70,15 @@ def seed_urls():
         else:
             shoe_price = None
 
+        page_link_element = soup.select_one('.image-box a')
+        if page_link_element:
+            page_links = page_link_element['href']
+        else:
+            page_links = None
+
+
         post_data = el.find('div', class_='post-data')
-        style_code, region, retailers_links, page_links = None, None, [], []
+        style_code, region, retailers_links, footer_links = None, None, [], []
         colorway = None
         if post_data:
             for p in post_data.find_all('p'):
@@ -90,7 +95,7 @@ def seed_urls():
             release_footer_bottom = el.find('div', class_='release-footer-bottom')
             if release_footer_bottom:
                 for a in release_footer_bottom.find_all('a'):
-                    page_links.append(a["href"])
+                    footer_links.append(a["href"])
 
 
                     
@@ -101,6 +106,7 @@ def seed_urls():
         print('Style code:', style_code)
         print('Region', region)
         print('Retailers links', retailers_links)
+        print('footer_links', footer_links)
         print('page_links', page_links)
         print('upvotes_timeline', upvotes_timeline)
         
@@ -113,6 +119,7 @@ def seed_urls():
         'style_code': style_code,
         'region': region,
         'retailers_links': retailers_links,
+        'footer_links': footer_links,
         'page_links': page_links,
         'upvotes_timeline': upvotes_timeline,
     })
