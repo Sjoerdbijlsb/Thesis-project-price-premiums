@@ -9,12 +9,11 @@ from datetime import datetime
 import requests
 from selenium.webdriver.common.by import By
 import csv
-
-
+import json
 
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
-url = "https://sneakernews.com/release-dates/"
+url = "https://sneakernews.com/release-dates"
 driver.get(url)
 
 button = driver.find_element(By.ID,'CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll')
@@ -53,6 +52,11 @@ def seed_urls():
         else:
             release_date = None
 
+        rating_element = el.select_one('.release-rating')
+        if rating_element:
+            upvotes_timeline = rating_element.get_text().strip()
+        else:
+            upvotes_timeline = None
 
         # extract shoe name
         shoe_name_element = el.select_one('h2 a')
@@ -87,6 +91,8 @@ def seed_urls():
             if release_footer_bottom:
                 for a in release_footer_bottom.find_all('a'):
                     page_links.append(a["href"])
+
+
                     
         print('Release date:', release_date)
         print('Shoe name:', shoe_name)
@@ -96,6 +102,8 @@ def seed_urls():
         print('Region', region)
         print('Retailers links', retailers_links)
         print('page_links', page_links)
+        print('upvotes_timeline', upvotes_timeline)
+        
 
         data.append({
         'release_date': release_date,
@@ -105,7 +113,8 @@ def seed_urls():
         'style_code': style_code,
         'region': region,
         'retailers_links': retailers_links,
-        'page_links': page_links
+        'page_links': page_links,
+        'upvotes_timeline': upvotes_timeline,
     })
 
     # Write data to json file
