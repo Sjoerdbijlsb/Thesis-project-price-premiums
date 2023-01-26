@@ -9,6 +9,8 @@ from datetime import datetime
 import requests
 from selenium.webdriver.common.by import By
 import json
+import boto3
+
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 url = "https://sneakernews.com/release-dates"
@@ -123,6 +125,7 @@ def seed_urls(url_list_news):
             'footer_links': footer_links,
             'page_links': page_links,
             'upvotes_timeline': upvotes_timeline,
+            'timestamp': int(time.time())
             })
         all_data.extend(data)
     return all_data
@@ -133,7 +136,23 @@ news_urls = seed_urls(url_list_news)
 
 # Write data to json file
 
-with open('sneaker_news.json', 'w', encoding = 'utf-8') as f:
+with open('../../data/sneaker_news.json', 'a', encoding = 'utf-8') as f:
     for item in news_urls:
         f.write(json.dumps(item))
         f.write('\n')
+
+
+
+# Setting up info for aws S3
+import boto3
+# Create an S3 client
+s3 = boto3.client('s3')
+# The name of the S3 bucket
+bucket_name = 'pricepremiums'
+# The name of the CSV file you want to upload
+file_name = '../../data/sneaker_news.json'
+# The S3 key (object key) for the file
+object_key = 'data/' + 'sneaker_news.json' 
+# Upload the file to S3
+s3.upload_file(file_name, bucket_name, object_key)
+

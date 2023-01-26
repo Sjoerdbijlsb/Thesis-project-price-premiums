@@ -160,3 +160,17 @@ def product_info():
             set_state(line_number)
 
 product_info()
+
+
+# Setting up info for aws S3
+import boto3
+# Create an S3 client
+s3 = boto3.client('s3')
+# The name of the S3 bucket
+bucket_name = 'pricepremiums'
+# The name of the CSV file you want to upload
+file_name = '../../data/snkrtest.json'
+# The S3 key (object key) for the file
+object_key = 'data/' + 'snkrtest.json' 
+# Upload the file to S3
+s3.upload_file(file_name, bucket_name, object_key)
