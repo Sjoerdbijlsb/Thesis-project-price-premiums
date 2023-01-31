@@ -136,7 +136,7 @@ news_urls = seed_urls(url_list_news)
 
 # Write data to json file
 
-with open('../../data/sneaker_news.json', 'a', encoding = 'utf-8') as f:
+with open('../../data/sneakernews_seeds.json', 'a', encoding = 'utf-8') as f:
     for item in news_urls:
         f.write(json.dumps(item))
         f.write('\n')
@@ -150,9 +150,9 @@ s3 = boto3.client('s3')
 # The name of the S3 bucket
 bucket_name = 'pricepremiums'
 # The name of the CSV file you want to upload
-file_name = '../../data/sneaker_news.json'
+file_name = '../../data/sneakernews_seeds.json'
 # The S3 key (object key) for the file
-object_key = 'data/' + 'sneaker_news.json' 
+object_key = 'data/' + 'sneakernews_seeds.json' 
 # Upload the file to S3
 s3.upload_file(file_name, bucket_name, object_key)
 

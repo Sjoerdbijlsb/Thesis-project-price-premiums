@@ -9,6 +9,7 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 from webdriver_manager.chrome import ChromeDriverManager
 import os
 import logging
+import boto3
 
 
 # set up logging
@@ -35,11 +36,11 @@ def set_state(line_number):
 # scrape product info from links
 def product_info():
     line_number = get_state()
-    content = open('../../data/snkrtest.json', 'r').readlines()[line_number:]
+    content = open('../../data/goat_timeline_seeds.json', 'r').readlines()[line_number:]
     counter = 0 
     driver = webdriver.Chrome(ChromeDriverManager().install())
     user_agent = {'User-agent': 'Mozilla/5.0'}
-    with open('../../data/sneaker_info.csv', mode='a', encoding = 'utf-8', newline='') as csv_file:
+    with open('../../data/goat_product_info.csv', mode='a', encoding = 'utf-8', newline='') as csv_file:
         fieldnames = ['product_name', 'brand', 'sku', 'release_date', 'nickname', 'designer', 'main_color', 'upper_material', 'category', 'technology', 'featured_in_1', 'featured_in_2', 'featured_in_3', 'size', 'price', 'timestamp']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -163,14 +164,10 @@ product_info()
 
 
 # Setting up info for aws S3
-import boto3
-# Create an S3 client
 s3 = boto3.client('s3')
 # The name of the S3 bucket
 bucket_name = 'pricepremiums'
-# The name of the CSV file you want to upload
-file_name = '../../data/snkrtest.json'
-# The S3 key (object key) for the file
-object_key = 'data/' + 'snkrtest.json' 
+file_name = '../../data/goat_product_info.csv'
+object_key = 'data/' + 'goat_product_info.csv' 
 # Upload the file to S3
 s3.upload_file(file_name, bucket_name, object_key)

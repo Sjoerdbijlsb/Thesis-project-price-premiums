@@ -6,7 +6,7 @@
 *.csv
 .json
 *.js
-src/analysis/check_df.ipynb
-src/data-collection/Untitled.ipynb
-src/data-collection/.ipynb_checkpoints/Untitled-checkpoint.ipynb
-data/snkrtest.json
+data/goat_product_info.csv
+data/goat_timeline_seeds.json
+data/sneakernews_seeds.json
+data/stockx_resale_transactions_2013_2020.csv

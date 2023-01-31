@@ -22,14 +22,14 @@ Sys.setenv("AWS_ACCESS_KEY_ID" = aws_access_key_id,
 bucket <- "s3://pricepremiums/data/"
 contents <- s3_ls(bucket)
 
-# looping through the AWS s3 bucket 
+# looping through the AWS s3 bucket  # nolint
 # download all adjuststed files by "key" element
-for (i in 1:nrow(contents)) {
+for (i in 1:nrow(contents)) { # nolint
   obj <- contents[i, "key"]
   last_modified <- as.Date(contents[i, "last_modified"], format = "%Y-%m-%d")
   today <- as.Date(Sys.Date())
 # Only download files modified in the last 7 days
-  if (last_modified >= today - 7) {  
+  if (last_modified >= today - 7) {   # nolint
     save_object(obj, bucket, file = paste0("../../", obj), overwrite = TRUE)
   }
 }
