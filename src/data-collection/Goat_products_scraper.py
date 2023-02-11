@@ -7,6 +7,7 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 import os
 import logging
 import boto3
@@ -15,6 +16,32 @@ import boto3
 # set up logging
 logging.basicConfig(filename="scraper.log", level=logging.ERROR)
 
+
+# Set the proxy in desired capabilities
+proxy = ""
+desired_capabilities = webdriver.DesiredCapabilities.CHROME
+desired_capabilities['proxy'] = {
+    "httpProxy": proxy,
+    "ftpProxy": proxy,
+    "sslProxy": proxy,
+    "noProxy": None,
+    "proxyType": "MANUAL",
+    "class": "org.openqa.selenium.Proxy",
+    "autodetect": False
+}
+
+# Create the Chrome options object and add the desired capabilities
+options = Options()
+options.add_argument("--disable-extensions")
+options.add_argument("--disable-notifications")
+options.add_argument("--disable-popup-blocking")
+options.add_argument("--disable-infobars")
+options.add_argument("disable-infobars")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-gpu")
+options.add_argument("--remote-debugging-port=9222")
+options.add_argument("--remote-debugging-address=0.0.0.0")
 
 
 def get_state():
@@ -36,12 +63,12 @@ def set_state(line_number):
 # scrape product info from links
 def product_info():
     line_number = get_state()
-    content = open('../../data/goat_timeline_seeds.json', 'r').readlines()[line_number:]
+    content = open('../../data/goat_timeline_seeds_popular.json', 'r').readlines()[line_number:]
     counter = 0 
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
     user_agent = {'User-agent': 'Mozilla/5.0'}
-    with open('../../data/goat_product_info.csv', mode='a', encoding = 'utf-8', newline='') as csv_file:
-        fieldnames = ['product_name', 'brand', 'sku', 'release_date', 'nickname', 'designer', 'main_color', 'upper_material', 'category', 'technology', 'featured_in_1', 'featured_in_2', 'featured_in_3', 'size', 'price', 'timestamp']
+    with open('../../data/goat_product_info_popular.csv', mode='a', encoding = 'utf-8', newline='') as csv_file:
+        fieldnames = ['product_name', 'brand', 'sku', 'release_date', 'nickname', 'designer', 'main_color', 'upper_material', 'category', 'technology', 'featured_in_1', 'featured_in_2', 'featured_in_3', 'size', 'price', 'links_rec', 'images_rec', 'links_cat', 'images_cat', 'links_brand', 'images_brand', 'timestamp']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -52,23 +79,34 @@ def product_info():
             driver.get(obj['sneaker url'])
             time.sleep(3)
             soup = BeautifulSoup(driver.page_source)
-            
+
+
             price_and_size = []
-            elements = soup.find_all("div", class_="SizeAndPrice__Root-sc-1w2dirf-0")
+            elements = soup.find_all("div", class_="SizeAndPrice__Root-sc-1w2dirf-0") 
             if elements:
-                    for element in elements:
-                        size = element.find("div", class_="SizeAndPrice__Size-sc-1w2dirf-1").text
-                        price = element.find("span", class_="SizeAndPrice__Price-sc-1w2dirf-2").text
-                        to_be_attached_price = {'size': size, 'price': price}
-                        price_and_size.append(to_be_attached_price)   
+                for element in elements:
+                    size = element.find("div", class_="SizeAndPrice__Size-sc-1w2dirf-1").text
+                    price_element = element.find("span", class_="SizeAndPrice__Price-sc-1w2dirf-2")
+                    if price_element:
+                        price = price_element.text
+                    else:
+                        price = "Make offer"
+                    to_be_attached_price = {'size': size, 'price': price}
+                    price_and_size.append(to_be_attached_price)
             else:
                 size = "N/A"
                 price = "N/A"
                 to_be_attached_price = {'size': size, 'price': price}
                 price_and_size.append(to_be_attached_price)
 
+
                     
             # facts or atttributes of a specific shoe
+            try:
+                text = soup.find("p", class_="WindowItemLongText__Text-sc-1mxjefz-1 iVfnQR").text
+            except AttributeError:
+                print("Without description")
+
             release_date = soup.find(attrs={"data-qa":"release_date_sort_text"})
             if release_date is not None:
                 release_date = release_date.get_text()
@@ -149,25 +187,74 @@ def product_info():
                 print(nickname)
             except AttributeError:
                 print("Nickname not found")
-            
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            
+
+            links_rec = []
+            images_rec = []
+            product_containers = soup.find_all('div', class_='ProductTemplateImageGrid__Wrapper-sc-5f764f-0 WjWzv')
+            for container in product_containers:
+                try:
+                    link = container.find('a', class_='ProductTemplateImageGrid__Link-sc-5f764f-1 bQechd')['href']
+                    image = container.find('img')['src']
+                    links_rec.append(link)
+                    images_rec.append(image)
+                except:
+                    print("Error: Unable to extract information from this product container.")
+
+            print("Links: ", links_rec)
+            print("Images: ", images_rec)
+
+            links_brand = []
+            images_brand = []
+            links_cat = []
+            images_cat = []
+
+            header_links = soup.find_all('a', class_='WindowItemGrid__HeaderLink-sc-1l2rluv-1 hcGTlU')
+            for header_link in header_links:
+                if '/brand/' in header_link['href']:
+                    grids = soup.find_all('div', class_='SearchResultImageGrid__Wrapper-sc-jvj89x-0 blGHwY')
+                    for grid in grids:
+                        try:
+                            link = grid.find('a', class_='SearchResultImageGrid__Link-sc-jvj89x-1 oxLNa')['href']
+                            image = grid.find('img')['src']
+                            links_brand.append(link)
+                            images_brand.append(image)
+                        except:
+                            print("Error: Unable to extract information from this product container.")
+
+                elif '/sneakers/silhouette/' in header_link['href']:
+                    grids = soup.find_all('div', class_='SearchResultImageGrid__Wrapper-sc-jvj89x-0 blGHwY')
+                    for grid in grids:
+                        try:
+                            link = grid.find('a', class_='SearchResultImageGrid__Link-sc-jvj89x-1 oxLNa')['href']
+                            image = grid.find('img')['src']
+                            links_cat.append(link)
+                            images_cat.append(image)
+                        except:
+                            print("Error: Unable to extract information from this product container.")
+                else:
+                    print("Not a relevant header link, skipping...")
+
+            print("Links_brand: ", links_brand)
+            print("Images_brand: ", images_brand)
+            print("Links_cat: ", links_cat)
+            print("Images_cat: ", images_cat)
+
+
             for shoe_info in price_and_size:
                 writer.writerow({'product_name': product_name, 'brand': brand, 'sku': sku, 'release_date': release_date, 'nickname': nickname, 
                 'designer': designer, 'main_color': main_color, 'upper_material': upper_material, 'category': category, 'technology' : technology, 'featured_in_1': featured_in_1, 
-                'featured_in_2': featured_in_2, 'featured_in_3': featured_in_3, 'size':shoe_info['size'], 'price':shoe_info['price'], 'timestamp': timestamp})
+                'featured_in_2': featured_in_2, 'featured_in_3': featured_in_3, 'size':shoe_info['size'], 'price':shoe_info['price'], 'links_rec': links_rec, 'images_rec': images_rec, 
+                'links_cat': links_cat, 'images_cat': images_cat, 'links_brand': links_brand, 'images_brand': images_brand, 'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
         
-            set_state(line_number)
+            set_state(line_number) 
 
 product_info()
-
 
 # Setting up info for aws S3
 s3 = boto3.client('s3')
 # The name of the S3 bucket
 bucket_name = 'pricepremiums'
-file_name = '../../data/goat_product_info.csv'
-object_key = 'data/' + 'goat_product_info.csv' 
+file_name = '../../data/goat_product_info_popular.csv'
+object_key = 'data/' + 'goat_product_info_popular.csv' 
 # Upload the file to S3
 s3.upload_file(file_name, bucket_name, object_key)
