@@ -21,6 +21,12 @@ options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) App
 # Initialize a new instance of the Chrome driver with the above options
 driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
 
+# set up the key file (which is needed for only one of the endpoints)
+key_file_path = '../../../key.json'
+# Load the key from the JSON file
+with open(key_file_path) as f:
+    key = json.load(f)['key']
+
 # Define a function to process data for a given product ID, category, and slug
 def process_id(id, category, slug):
     # Check if the id parameter is valid
@@ -31,7 +37,7 @@ def process_id(id, category, slug):
     # Define the URLs from which to extract data
     url = f"https://www.goat.com/web-api/v1/product_variants/buy_bar_data?productTemplateId={id}&countryCode=US"
     url_offer = f"https://www.goat.com/web-api/v1/highest_offers?productTemplateId={id}&country_code=US"
-    url_facts = f"https://www.goat.com/_next/data/M6qTHvtDwcsatagxmdLw4/en-us/{category}/{slug}.json" # you should put an active key to retrieve this data
+    url_facts = f"https://www.goat.com/_next/data/{key}/en-us/{category}/{slug}.json" # you should put an active key to retrieve this data
     
     # Print a message indicating which ID is being processed
     print(f"Processing data for ID {id}...")
