@@ -6,7 +6,6 @@
 *.csv
 .json
 *.js
-data/goat_product_info.csv
-data/goat_timeline_seeds.json
-data/sneakernews_seeds.json
-data/stockx_resale_transactions_2013_2020.csv
+data/
+paper/
+
