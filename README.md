@@ -6,6 +6,7 @@ product purchases from [GOAT](https://www.goat.com/), one of the biggest resale 
 # Repository overview
 The set up of the files in this project are as follows:
 ```
+├── img
 ├── data
 └──  gen
    ├── output
@@ -45,6 +46,8 @@ The set up of the files in this project are as follows:
 (4) productlist20230425.csv
 -Similar to file 3, with a wider selection outside the top 20,000 (100,000 + products)
 
+(5) output_list_counts_all20230508.csv
+- A short summary list of brands and the number of times they occur on the platform in total
 
 * Note: file 3 and 4 are first used to draw a sample from in this analysis. File 1 and 2 are used directly in preparing the data and the analysis.
 ```
@@ -85,8 +88,9 @@ make
 ```
 
 # Gather new data
-In case you want to gather the data from scratch, you can make use of the scrapers in the repository. Unfortunately, not everything can be run in one scraper. The biggest reason is that during the project, more endpoints were needed to obtain more data. To arrive at the dataset
+In case you want to gather the data from scratch, you can make use of the scrapers in the repository based on Python. The scrapers contact the API endpoints and either make direct requests or use a webdriver to obtain primarily product recommendations and  recent purchase data from GOAT. Unfortunately, not everything can be run in one scraper. The biggest reason is that during the project, more endpoints were needed to obtain more data. 
 
+Descriptions of each file:
 ```
 (1) Goat_assortment_api.py
 -
@@ -104,15 +108,10 @@ In case you want to gather the data from scratch, you can make use of the scrape
 -
 -
 ```
+To arrive at the datasets as 
 
-For scraper 3 you would
 
-Be sure to install these packages in your python environment:
-
-```
-pip install bs4
-pip install selenium
-```
+*Note: For scraper 3 you need a key matching your browser sesssion. 
 
 # Contact
 s.bijl_1@tilburguniversity.edu
