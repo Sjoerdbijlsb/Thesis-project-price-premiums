@@ -279,6 +279,15 @@ rec_focal_connection_df_cleaned_finalmerge <- rec_focal_connection_df_cleaned %>
   mutate(is_substitute = ifelse(product_type_category == product_type_category_focal, 1, 0)) %>% # create a dummy variable when specific categories match
   rename("main_category_sampled" = main_category_sampled.x) 
 
+
+# Create a vector of luxury brands
+luxury_brands <- c("Alexander McQueen", "Amiri", "Balenciaga", "Bottega Veneta",
+                   "Dior", "Givenchy", "Gucci", "Rick Owens", "Saint Laurent", "Versace", "Stone Island", "Maison Margiela",
+                   "Burberry", "Jacquemus", "Raf Simons", "Vetements", "MM6 Maison Margiela", "Marni", "Casablanca", "Christian Louboutin", "Loewe", "Valentino", "Moncler", "Fendi", "3.PARADIS", "A-Cold-Wall*", "Acne Studios", "C2H4", "Charles Jeffrey Loverboy", "Courrèges",
+                   "Dior", "Enfants Riches Déprimés", "Helmut Lang", "Issey Miyake", "Jacquemus", "Junya Watanabe", "Kenzo", "Lanvin",
+                   "Louis Vuitton", "Martine Rose", "Off-White", "Ottolinger", "Paco rabanne", "Polo Ralph Lauren", "Rick Owens DRKSHDW",
+                   "Comme des Garçons", "Tao Comme des Garçons", "Undercover", "We11done", "Yohji Yamamoto Pour Hommee", "Fear of God")
+
 # Create a new column called "luxury_dummy" and set it to 1 for luxury brands, 0 otherwise
 rec_focal_connection_df_cleaned_finalmerge$luxury_dummy <- ifelse(rec_focal_connection_df_cleaned_finalmerge$brand %in% luxury_brands, 1, 0)
 

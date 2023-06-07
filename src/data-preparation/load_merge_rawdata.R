@@ -1,14 +1,13 @@
 library(tidyverse)
 ### 1. Load in files
 # Set up file_list of files in the directory
-file_list <- c("../../data/recinfo20230414.csv", "../../data/productlist20230425.csv", "../../data/recinfo_2023-05-02.csv", "../../data/recinfo20230425_2.csv", "../../data/recent_purchases_2023-05-11.csv", "../../data/productlist20230501.csv")
+file_list <- c("../../data/productlist20230425.csv", "../../data/recinfo_2023-05-02.csv", "../../data/recent_purchases_2023-05-02.csv", "../../data/productlist20230501.csv")
 df_list <- map(file_list, ~ read_csv(.x)) # Use purrrr from tidyverse to read all files at once
 
-recommendation_list <- df_list[[3]]
-recommendation_list_2 <- df_list[[4]]
-sales_list <-  df_list[[5]]
-product_pages_list <-  df_list[[2]]
-product_pages_list_2 <-  df_list[[6]] %>% 
+recommendation_list <- df_list[[2]]
+sales_list <-  df_list[[3]]
+product_pages_list <-  df_list[[1]]
+product_pages_list_2 <-  df_list[[4]] %>% 
   select(id, slug, image_url, retail_price_cents, retail_price_cents_eur, discount_tag, rank, category, timestamp, product_type, release_date_year)
   
 
@@ -59,3 +58,4 @@ saveRDS(merged_focal_products_df_ext, file = "../../gen/temp/merged_focal_produc
 saveRDS(recommendations_only, file = "../../gen/temp/recommendation_list.rds")
 # write file for further processing of data
 saveRDS(sales_list, file = "../../gen/temp/sales_list.rds")
+

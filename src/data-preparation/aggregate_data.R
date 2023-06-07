@@ -144,6 +144,6 @@ transform_data(aggregate_rec_3, "../../gen/temp/aggregate_rec.rds")
 transform_data(aggregate_rec_sneakers_sample, "../../gen/temp/aggregate_rec_sneakers.rds")
 transform_data(aggregate_rec_apparel_sample, "../../gen/temp/aggregate_rec_apparel.rds")
 # make summary tables from data 
-saveRDS(dummy_proportion, file = "../../gen/temp/plot_data_file.rds")
+saveRDS(rec_connection_aggretated, file = "../../gen/temp/rec_connection_aggretated.rds")
 
 
