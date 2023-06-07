@@ -1,17 +1,17 @@
 DATA = ../../data
 TEMP = ../../gen/temp
 
-all: $(DATA)/goat_product_info.csv $(DATA)/goat_timeline_seeds.json $(DATA)/sneakernews_seeds.json $(DATA)/stockx_resale_transactions_2013_2020.csv 
+all: $(DATA)/recent_purchases_2023-05-02.csv $(DATA)/recinfo_2023-05-02.csv $(DATA)/productlist20230501.csv $(DATA)/productlist20230425.csv $(TEMP)/merged_focal_products_df.rds $(TEMP)/recommendation_list.rds $(TEMP)/sales_list.rds $(TEMP)/focal_products_only_df_cleaned_agg.rds $(TEMP)/focal_products_only_df_cleaned_merged.rds $(TEMP)/recommendations.rds $(TEMP)/focal_products_only_df_cleaned.rds  $(TEMP)/sales_list_cleaned.rds $(TEMP)/aggregate_rec.rds  $(TEMP)/aggregate_rec_sneakers.rds $(TEMP)/aggregate_rec_apparel.rds $(TEMP)/rec_connection_aggretated.rds
 
+$(DATA)/recent_purchases_2023-05-02.csv $(DATA)/recinfo_2023-05-02.csv $(DATA)/productlist20230501.csv $(DATA)/productlist20230425.csv: download_files.R
+	Rscript download_files.R
 
-$(DATA)/goat_product_info.csv: load_files.R
-	R --vanilla < load_files.R
+$(TEMP)/merged_focal_products_df.rds $(TEMP)/recommendation_list.rds $(TEMP)/sales_list.rds: load_merge_rawdata.R $(DATA)/recent_purchases_2023-05-02.csv $(DATA)/recinfo_2023-05-02.csv $(DATA)/productlist20230501.csv $(DATA)/productlist20230425.csv
+	Rscript load_merge_rawdata.R
 
-$(DATA)/goat_timeline_seeds.json: load_files.R
-	R --vanilla < load_files.R
+$(TEMP)/focal_products_only_df_cleaned_agg.rds $(TEMP)/focal_products_only_df_cleaned_merged.rds $(TEMP)/recommendations.rds $(TEMP)/focal_products_only_df_cleaned.rds  $(TEMP)/sales_list_cleaned.rds: preparation_goat_files.R $(TEMP)/merged_focal_products_df.rds $(TEMP)/recommendation_list.rds $(TEMP)/sales_list.rds
+	Rscript preparation_goat_files.R 
 
-$(DATA)/sneakernews_seeds.json: load_files.R
-	R --vanilla < load_files.R
+$(TEMP)/aggregate_rec.rds  $(TEMP)/aggregate_rec_sneakers.rds $(TEMP)/aggregate_rec_apparel.rds $(TEMP)/rec_connection_aggretated.rds: aggregate_data.R $(TEMP)/focal_products_only_df_cleaned_merged.rds $(TEMP)/recommendations.rds $(TEMP)/focal_products_only_df_cleaned_agg.rds
+	Rscript aggregate_data.R
 
-$(DATA)/stockx_resale_transactions_2013_2020.csv : load_files.R
-	R --vanilla < load_files.R
