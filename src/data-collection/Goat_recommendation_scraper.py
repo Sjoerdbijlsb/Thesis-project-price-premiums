@@ -213,7 +213,7 @@ current_date = datetime.now().strftime("%Y-%m-%d")
 output_file_path = f"../../data/recinfo_{current_date}.csv"
 sample_file_path = 'sample.csv'
 sample_df = pd.read_csv(sample_file_path)
-n = len(sample_df)
+n = 5000
 
 
 try:
