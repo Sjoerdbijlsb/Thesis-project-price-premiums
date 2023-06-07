@@ -1,11 +1,14 @@
-from selenium import webdriver
 import requests
-import time
 import json
-import csv
+import pandas as pd
+import time
+import os
 
-# set up the URL and headers
-url_all = "https://ac.cnstrc.com/browse/facet_options?facet_name=brand&key=key_XT7bjdbvjgECO5d8"
+url_template = "https://ac.cnstrc.com/browse/group_id/all?c=ciojs-client-2.35.2&key=key_XT7bjdbvjgECO5d8&i=921c8325-fea0-4f2a-aaf9-0b0a62acf38a&s=44&page=1&num_results_per_page=24"
+url_sneakers = "https://ac.cnstrc.com/browse/group_id/sneakers?c=ciojs-client-2.35.2&key=key_XT7bjdbvjgECO5d8&i=22d2aa20-59d6-4958-83c1-6171804a73aa&s=85&page=1&num_results_per_page=200&filters%5Bweb_groups%5D=sneakers&sort_by=relevance&sort_order=descending&fmt_options%5Bhidden_fields%5D=gp_lowest_price_cents_3&fmt_options%5Bhidden_fields%5D=gp_instant_ship_lowest_price_cents_3&fmt_options%5Bhidden_facets%5D=gp_lowest_price_cents_3&fmt_options%5Bhidden_facets%5D=gp_instant_ship_lowest_price_cents_3&variations_map=%7B%22group_by%22%3A%5B%7B%22name%22%3A%22product_condition%22%2C%22field%22%3A%22data.product_condition%22%7D%2C%7B%22name%22%3A%22box_condition%22%2C%22field%22%3A%22data.box_condition%22%7D%5D%2C%22values%22%3A%7B%22min_regional_price%22%3A%7B%22aggregation%22%3A%22min%22%2C%22field%22%3A%22data.gp_lowest_price_cents_3%22%7D%2C%22min_regional_instant_ship_price%22%3A%7B%22aggregation%22%3A%22min%22%2C%22field%22%3A%22data.gp_instant_ship_lowest_price_cents_3%22%7D%7D%2C%22dtype%22%3A%22object%22%7D&qs=%7B%22features%22%3A%7B%22display_variations%22%3Atrue%7D%2C%22feature_variants%22%3A%7B%22display_variations%22%3A%22matched%22%7D%7D&_dt=1683541782161"
+url_apparel = "https://ac.cnstrc.com/browse/group_id/apparel?c=ciojs-client-2.35.2&key=key_XT7bjdbvjgECO5d8&i=22d2aa20-59d6-4958-83c1-6171804a73aa&s=86&page=1&num_results_per_page=24&sort_by=relevance&sort_order=descending&fmt_options%5Bhidden_fields%5D=gp_lowest_price_cents_3&fmt_options%5Bhidden_fields%5D=gp_instant_ship_lowest_price_cents_3&fmt_options%5Bhidden_facets%5D=gp_lowest_price_cents_3&fmt_options%5Bhidden_facets%5D=gp_instant_ship_lowest_price_cents_3&variations_map=%7B%22group_by%22%3A%5B%7B%22name%22%3A%22product_condition%22%2C%22field%22%3A%22data.product_condition%22%7D%2C%7B%22name%22%3A%22box_condition%22%2C%22field%22%3A%22data.box_condition%22%7D%5D%2C%22values%22%3A%7B%22min_regional_price%22%3A%7B%22aggregation%22%3A%22min%22%2C%22field%22%3A%22data.gp_lowest_price_cents_3%22%7D%2C%22min_regional_instant_ship_price%22%3A%7B%22aggregation%22%3A%22min%22%2C%22field%22%3A%22data.gp_instant_ship_lowest_price_cents_3%22%7D%7D%2C%22dtype%22%3A%22object%22%7D&qs=%7B%22features%22%3A%7B%22display_variations%22%3Atrue%7D%2C%22feature_variants%22%3A%7B%22display_variations%22%3A%22matched%22%7D%7D&_dt=1683543657305"
+# Create a list of release year filters using the range function (in case to sample the entire platform)
+year_filters = [str(year) for year in range(1985, 2024)] 
 
 headers = {
 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -17,62 +20,33 @@ headers = {
 "Upgrade-Insecure-Requests": "1",
 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0"}
 
-all_data = []
-i = 0
-response = requests.get(url_all, headers=headers)
-print(f'Response {i+1}: {response.status_code}')
-data = response.json()
-all_data.append(data)
-time.sleep(2)
+response = requests.get(url_template, headers=headers)
+data = json.loads(response.text)
+print(data)
 
-#Create the csv.writter object
-csv_file = open('../../data/brands_sneakers.csv', 'w', newline='')
-csv_writer = csv.writer(csv_file)
+name_list = []
+count_list = []
 
-#write data to the file
-csv_writer.writerow(['Brand', 'Status', 'Count', 'Display_Name', 'Year','Mobile_Display','Location'])
+for brand in data["response"]["facets"][0]["options"]:
+    brand_name = brand["display_name"]
+    count_brand = brand["count"]
+    name_list.append(brand_name)
+    count_list.append(count_brand)
 
-for option in data['response']['facets'][0]['options']:
-    year = option['data'].get('year')
-    mobile_display = option['data'].get('mobile_display')
-    location = option['data'].get('location')
-    csv_writer.writerow([
-    option['display_name'],
-    option['status'],
-    option['count'],
-    option['value'],
-    year,
-    mobile_display,
-    location])
-    
-#Close the file
-csv_file.close()
+for color in data["response"]["facets"][8]["options"]:
+    color_name = color["display_name"]
+    count_color = color["count"]
+    name_list.append(color_name)
+    count_list.append(count_color)
 
-#Create the csv.writter object
-csv_file = open('../../data/categories_sneakers.csv', 'w', newline='')
-csv_writer = csv.writer(csv_file)
+# Create a pandas DataFrame from the lists
+df = pd.DataFrame({"name": name_list, "count": count_list})
 
-#write data to the file
-csv_writer.writerow(['Display_Name', 'Status', 'Count', 'value','Mobile_display_name'])
-    
-for option in data['response']['facets'][1]['options']:
+# Write the DataFrame to a CSV file
+output_file_path = f'../../data/output_list_counts_all{time.strftime("%Y%m%d")}.csv'
+df.to_csv(output_file_path, index=False)
 
-    mobile_display_name = option['data'].get('mobile_display_name')
-    csv_writer.writerow([
-    option['display_name'],
-    option['status'],
-    option['count'],
-    option['value'],
-    mobile_display_name])
-
-
-
-#print the content of the ouptut
-#with open("../../../data/searchdata_sneaker_selection.json", "w") as output_file:
-    #json.dump(all_data, output_file)
-    
-
-#Close the file
-csv_file.close()
+print(df.head())
+#time.sleep(2)
 
     
