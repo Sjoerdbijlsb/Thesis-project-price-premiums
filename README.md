@@ -55,40 +55,62 @@ To set up make, this is a helpful [guide](https://tilburgsciencehub.com/building
 
 ## Check dependencies first
 
-First intsall the following packages for R:
+First install the following packages for R:
 ```
 install.packages("tidyverse")
 install.packages("googledrive")
 install.packages("anytime")
-install.packages("googledrive")
 install.packages("stringr")
 install.packages("lubridate")
 install.packages("xtable")
 install.packages("vtable")
 ```
-To set up R  this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/)
+To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/)
+
+If make and R are set up properly, you should be able to run the project by:
+
+-Fork this repository to your own Github account.
+-Clone the forked repository onto your local machine using the following command:
+```
+git clone https://github.com/<your-username>/<repo-name>.git
+```
+- In your 
+```
+cd <repo-name>
+```
+- Run make
+
 
 # Gather new data
-In case you want to gather the data from scratch, you can make use of the scrapers in this file.
+In case you want to gather the data from scratch, you can make use of the scrapers in the repository. Unfortunately, not everything can be run in one scraper. The biggest reason is that during the project, more endpoints were needed to obtain more data. The 
+
 
 ```
-(1)
+(1) Goat_assortment_api.py
 -
 -
-(2)
+(2) Goat_recent_purchases.py
 -
 -
-(3)
+(3) Goat_recommendation_scraper.py
 -
 -
-(4)
+(4) Goat_sample.py
 -
 -
-(5)
+(5) Goat_search_group_counts.py
 -
 -
 ```
 
+For scraper 3 you would
+
+Be sure to install these packages in your python environment:
+
+```
+pip install bs4
+pip install selenium
+```
 
 # Contact
 s.bijl_1@tilburguniversity.edu
