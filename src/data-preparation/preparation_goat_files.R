@@ -19,6 +19,8 @@ rec_focal_connection_df <-df_list_preparation[[2]]
 sales_list <- df_list_preparation[[3]]
 
 # read in assortment size lists instantly 
+apparel_count_list <- read_csv("../../data/output_list_counts_apparel20230508.csv")
+sneakers_count_list <- read_csv("../../data/output_list_counts_sneakers20230508.csv")
 all_count_list <- read_csv("../../data/output_list_counts_all20230508.csv")
 
 
@@ -66,8 +68,8 @@ product_characteristics_df_ext_cleaned <- product_characteristics_df_ext %>%
 
 
 # set the value of main_category_sampled based on product_type_category
-product_characteristics_df_ext$main_category_sampled[product_characteristics_df_ext_cleaned$product_type_category %in% c("sneakers", "boots", "sandals")] <- "sneakers"
-product_characteristics_df_ext$main_category_sampled[!product_characteristics_df_ext_cleaned$product_type_category %in% c("sneakers", "boots", "sandals")] <- "apparel"
+product_characteristics_df_ext_cleaned$main_category_sampled[product_characteristics_df_ext_cleaned$product_type_category %in% c("sneakers", "boots", "sandals")] <- "sneakers"
+product_characteristics_df_ext_cleaned$main_category_sampled[!product_characteristics_df_ext_cleaned$product_type_category %in% c("sneakers", "boots", "sandals")] <- "apparel"
 
 ###############
 
@@ -80,53 +82,11 @@ new_order <- c("id", "name", "size", "condition", "boxcondition", "salesrank", "
                "display_order", "recommended_list", "product_revenue", "timestamp_ranklist_retrieval",
                "timestamp_recinfo_retrieval", "release_date_year")
 
-product_characteristics_df_ext <- product_characteristics_df_ext %>% 
+product_characteristics_df_ext_cleaned <- product_characteristics_df_ext_cleaned %>% 
   select(any_of(new_order))
 #####
 ###
 
-
-
-# select only top x brands and color
-##### count list
-apparel_count_list_colors <- apparel_count_list %>%
-  slice(361:n()) %>% 
-  rename("color" = name, "count_platform_color" = count)  %>% 
-  filter(count_platform_color > 1 ) # top 15
-
-apparel_count_list_brands <- apparel_count_list %>%
-  slice(1:360) %>% 
-  rename("brand" = name, "count_platform_brand" = count) %>% 
-  filter(count_platform_brand > 1 )
-
-sneakers_count_list_colors <- sneakers_count_list %>%
-  slice(171:n()) %>% 
-  rename("color" = name, "count_platform_color" = count) %>% 
-  filter(count_platform_color > 1 ) 
-
-sneakers_count_list_brands <- sneakers_count_list %>%
-  slice(1:170) %>% 
-  rename("brand" = name, "count_platform_brand" = count) %>% 
-  filter(count_platform_brand > 1 )
-
-
-apparel_focal_connection_df_cleaned_finalmerge_counts <- product_characteristics_df_ext_cleaned %>%
-  filter(main_category_sampled == "apparel") %>% 
-  left_join(apparel_count_list_colors, by = "color") %>% 
-  left_join(apparel_count_list_brands, by = "brand") %>% 
-  rename("count_colors_apparel_sample" =  count_platform_color) %>% 
-  rename("count_brands_apparel_sample" = count_platform_brand) 
-
-
-sneakers_focal_connection_df_cleaned_finalmerge_counts <- product_characteristics_df_ext_cleaned %>%
-  filter(main_category_sampled == "sneakers") %>%
-  left_join(sneakers_count_list_colors, by = "color") %>% 
-  left_join(sneakers_count_list_brands, by = "brand") %>% 
-  rename("count_colors_sneaker_sample" =  count_platform_color) %>% 
-  rename("count_brands_sneaker_sample" = count_platform_brand) 
-
-product_characteristics_df_ext_cleaned <- bind_rows(apparel_focal_connection_df_cleaned_finalmerge_counts, sneakers_focal_connection_df_cleaned_finalmerge_counts)
-##########
 count_list_color_all <- all_count_list %>% 
   slice(579:n()) %>% 
   rename("count_color_all" = count, "color" = name) 
@@ -137,7 +97,7 @@ count_list_brand_all <- all_count_list %>%
   
 
 ####
-product_characteristics_df_ext_cleaned <- bind_rows(apparel_focal_connection_df_cleaned_finalmerge_counts, sneakers_focal_connection_df_cleaned_finalmerge_counts) %>% 
+product_characteristics_df_ext_cleaned <- product_characteristics_df_ext_cleaned %>% 
   left_join(count_list_color_all, by = "color") %>% 
   left_join(count_list_brand_all, by = "brand")
 

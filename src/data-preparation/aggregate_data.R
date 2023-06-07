@@ -66,7 +66,7 @@ aggregate_rec_sneakers_sample <- rec_connection_aggretated %>%
   filter(!is.na(revenue_level)) %>% 
   group_by(rec_id, recommended_list) %>% 
   mutate(count = n()) %>% 
-  select(rec_id, product_type_category, count, recommended_list, silhouette, avg_lastsold, avg_daily_sales, product_revenue, brand, detailed_color, color, gender, availability, main_category_sampled, release_date_year, count_brands_sneaker_sample, count_colors_sneaker_sample, count_color_all, count_brand_all, stockstatus, product_type_category, sneaker_page, apparel_page) %>% 
+  select(rec_id, product_type_category, count, recommended_list, silhouette, avg_lastsold, avg_daily_sales, product_revenue, brand, detailed_color, color, gender, availability, main_category_sampled, release_date_year, count_color_all, count_brand_all, stockstatus, product_type_category, sneaker_page, apparel_page) %>% 
   distinct()  %>% 
   rename("recommendation_count" = count) 
 
@@ -82,7 +82,7 @@ aggregate_rec_apparel_sample <- rec_connection_aggretated %>%
   filter(!is.na(revenue_level)) %>% 
   group_by(rec_id, recommended_list) %>% 
   mutate(count = n()) %>% 
-  select(rec_id, product_type_category, count, recommended_list, silhouette, avg_lastsold, avg_daily_sales, product_revenue, brand, detailed_color, color, gender, availability, main_category_sampled, release_date_year, count_brands_apparel_sample, count_colors_apparel_sample, count_color_all, count_brand_all, stockstatus, product_type_category, sneaker_page, apparel_page) %>% 
+  select(rec_id, product_type_category, count, recommended_list, silhouette, avg_lastsold, avg_daily_sales, product_revenue, brand, detailed_color, color, gender, availability, main_category_sampled, release_date_year, count_color_all, count_brand_all, stockstatus, product_type_category, sneaker_page, apparel_page) %>% 
   distinct()  %>% 
   rename("recommendation_count" = count) 
 
