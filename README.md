@@ -49,14 +49,28 @@ The set up of the files in this project are as follows:
 
 
 # Run study with the same data
-The analysis can also be replicated by running the . This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm).
+If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm).
 
 
 ## Check dependencies first
 
+First insall the following packages for R:
+```
+install.packages("tidyverse")
+install.packages("googledrive")
+install.packages("anytime")
+install.packages("googledrive")
+install.packages("stringr")
+install.packages("lubridate")
+install.packages("xtable")
+install.packages("vtable")
+```
 
 # Gather new data
 In case you want to gather the data from scratch, you can make use of the scrapers in this file.
+
+
+
 
 
 # Contact
