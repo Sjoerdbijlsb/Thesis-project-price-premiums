@@ -3,16 +3,14 @@ library(lubridate)
 library(xtable)
 library(vtable)
 # Set up file_list of files in the directory
-file_list_preparation <- c("../../gen/temp/focal_products_only_df_cleaned.rds",  "../../gen/temp/recommendations.rds", "../../gen/temp/sales_list_cleaned.rds", "../../gen/temp/focal_products_only_df_cleaned_merged.rds")
-
+file_list_preparation <- c("../../gen/temp/focal_products_only_df_cleaned.rds", "../../gen/temp/sales_list_cleaned.rds", "../../gen/temp/focal_products_only_df_cleaned_merged.rds", "../../gen/temp/rec_connection_aggretated.rds")
 
 # load in data
 df_list_preparation <- map(file_list_preparation, ~ readRDS(.x)) # Use purrrr from tidyverse to read all files at once
 product_characteristics_only_df <- df_list_preparation[[1]]
-rec_focal_connection_df <-df_list_preparation[[2]]
-sales_list <- df_list_preparation[[3]]
-focal_products_cleaned <-  df_list_preparation[[4]]
-
+sales_list <- df_list_preparation[[2]]
+focal_products_cleaned <-  df_list_preparation[[3]]
+summary_list <-  df_list_preparation[[4]]
 
 #### summary stats for recommendations info (Table 1)
 summ <- product_characteristics_only_df %>% 
@@ -73,23 +71,31 @@ st(sales_list, out='latex',file="../../paper/tables/summarystats_salesdata.tex",
 
 # number of lists
 summary_1 <- summary_list %>% 
+  filter(count_brand_all > 200) %>% 
+  group_by(recommended_list, rec_id) %>% 
+  summarise(count = n()) %>%
   group_by(recommended_list) %>% 
-  count()
+  summarise(avg_count = mean(count))
+
 
 # product revenue per list
 summary_2 <- summary_list %>% 
+  filter(count_brand_all > 200) %>% 
   group_by(recommended_list) %>% 
-  summarise(avg = mean(avg_daily_revenue, na.rm = TRUE))
+  summarise(avg = mean(product_revenue, na.rm = TRUE))
 
 # number of brands per list
 summary_3 <- summary_list %>% 
+  filter(count_brand_all > 200) %>% 
   group_by(recommended_list) %>% 
   summarise(num_brands = n_distinct(brand))
 
-# number of colors per list
-summary_3 <- summary_list %>% 
+
+summary_4 <- summary_list %>% 
+  filter(count_brand_all > 200) %>% 
   group_by(recommended_list) %>% 
-  summarise(num_colors = n_distinct(color))
+  summarise(luxury_percentage = mean(luxury_dummy))
+
 
 
 

@@ -19,9 +19,11 @@ aggregated_recommendations <- df_list_file[[1]]  %>%
   filter(!is.na(count_brand_all)) %>% 
   filter(!is.na(avg_lastsold)) %>% 
   select(-main_category_sampled) %>%
+  filter(count_brand_all > 200) %>% # select only brands with at least 200 products in assortment (since sample was on these products)
   mutate(product_type_category = as.character(product_type_category)) %>% 
   mutate(product_type_category = ifelse(product_type_category != "sneakers", "apparel", product_type_category)) %>% 
-  distinct()
+  distinct() %>%  
+  rename("bestseller_brand" = brand_list, "cf_recommendation_list" = recommendation_list) 
 
 
 aggregated_recommendations_sneakers_sample <- df_list_file[[2]]  %>% 
@@ -39,41 +41,30 @@ aggregated_recommendations_apparel_sample <- df_list_file[[3]]  %>%
 
 # For correlation matrix, no dummy variables can be used. Use this matrix
 aggregated_recommendations_correlation <-  aggregated_recommendations %>% 
-  select(recommendation_count, avg_daily_revenue, brand_list, recommendation_list, category_list)
+  select(recommendation_count, product_revenue, bestseller_brand, cf_recommendation_list, category_list)
 
 cor_df <- as.data.frame(cor(aggregated_recommendations_correlation))
 cor_table <- xtable(cor_df, caption = "Correlation Matrix model coefficients")
 cor_df # print out the correlation matrix
+print.xtable(cor_table, file = "../../paper/tables/correlation_matrix.tex")
 
-
-
-
-
-
-### models
-
-# first model (still includes all lists)
-model_1 <- lm(log(recommendation_count) ~ log(avg_daily_revenue) * recommendation_list +
-                log(avg_daily_revenue) * brand_list + log(avg_daily_revenue) * category_list + brand + product_type_category, data = aggregated_recommendations)
-
-# Print summary of the model
-summary(model_1)
 
 
 # improved model after taking out category list 
-model_1_2 <- lm(log(recommendation_count) ~ log(avg_daily_revenue) * recommendation_list +
-                log(avg_daily_revenue) * category_list + brand + product_type_category, data = aggregated_recommendations)
+model_1_2 <- lm(log(recommendation_count) ~ log(product_revenue) * cf_recommendation_list +
+                log(product_revenue) * bestseller_brand + brand + product_type_category, data = aggregated_recommendations)
 
 # Print summary of the model
 summary(model_1_2)
 
-
-
 # calculate VIF values
 
 model_vif <- vif(model_1_2)
-print(xtable(model_vif, caption = "Variance Inflation Factors (VIF)"), include.rownames = TRUE)
+model_vif_table <- xtable(model_vif, caption = "Variance Inflation Factors (VIF)", include.rownames = TRUE)
 model_vif
+print.xtable(model_vif_table, file = "../../paper/tables/vif_matrix.tex")
+
+
 
 
 # print table in long format
@@ -82,17 +73,21 @@ model_1_table <- xtable(model_1_summary)
 print(model_1_table, file = "../../paper/tables/model_1_summary.tex", tabular.environment = "longtable", include.rownames = TRUE, longtable = TRUE)
 ##############
 # Extract coefficients for variables with "brand" in them
+
+# Create a LaTeX table with stargazer
+stargazer(model_1_2, title = "Assortment size and luxury brand effect on recommendation count", type = "latex", 
+          out = "../../paper/tables/firststage_regression.tex", star.cutoffs = c(0.05, 0.01, 0.001))
 # Obtain summary statistics for model_1
-summary_model <- summary(model_1)
+summary_model <- summary(model_1_2)
 # Extract p-values for each coefficient
 p_values <- summary_model$coefficients[, "Pr(>|t|)"]
 # Filter coefficients based on a significance level of 0.05
-significant_coef <- coef(model_1)[p_values < 0.05]
+significant_coef <- coef(model_1_2)[p_values < 0.05]
 # Create a new data frame with significant brand names as rows and coefficients as columns
 significant_coef_df <- data.frame(brand = gsub("brand", "", names(significant_coef)), 
                                   coefficient = significant_coef, row.names = NULL) %>% 
-  filter(brand != "_list", brand != "log(avg_daily_revenue):recommendation_list", brand != "(Intercept)", brand != "log(avg_daily_revenue)", brand != "log(avg_daily_revenue):category_list", brand != "log(avg_daily_revenue)", brand != "recommendation_list", 
-         brand != "colorGold", brand != "colorGreen", brand != "colorTeal", brand != "log(avg_daily_revenue):_list") %>% 
+  filter(brand != "_list", brand != "log(product_revenue):cf_recommendation_list", brand != "(Intercept)", brand != "log(product_revenue)", brand != "log(product_revenue):category_list", brand != "log(product_revenue)", brand != "cf_recommendation_list", 
+         brand != "colorGold", brand != "colorGreen", brand != "colorTeal", brand != "log(product_revenue):_list") %>% 
   mutate(brand = as.factor(brand))
 
 
@@ -108,23 +103,28 @@ luxury_brands <- c("Alexander McQueen", "Amiri", "Balenciaga", "Bottega Veneta",
 # Create a new column called "luxury_dummy" and set it to 1 for luxury brands, 0 otherwise
 significant_coef_df$luxury_dummy <- ifelse(significant_coef_df$brand %in% luxury_brands, 1, 0)
 
-
-
 # add brand counts as IV's
 aggregated_recommendations_subset <- aggregated_recommendations %>% 
   select(count_brand_all, brand) %>% 
-  filter(brand != "log(avg_daily_revenue):_list") %>% 
+  filter(brand != "log(product_revenue):_list") %>% 
   distinct() %>% 
-  right_join(significant_coef_df) 
+  right_join(significant_coef_df) %>%  
+  rename("assortment_size" = count_brand_all) 
 
+# Fit the linear regression model
+model_2 <- lm(coefficient ~ log(assortment_size) + luxury_dummy, data = aggregated_recommendations_subset)
 
-
+summary(model_2)
 ##############
 # print long style table 
 model_2_summary <- summary(model_2)
 model_2_table <- xtable(model_2_summary)
 print(model_2_table, file = "../../paper/tables/model_2_summary.tex", tabular.environment = "longtable", include.rownames = TRUE, longtable = TRUE)
 
+
+# Create a LaTeX table with stargazer
+stargazer(model_2, title = "Assortment size and luxury brand effect on recommendation count", type = "latex", 
+          out = "../../paper/tables/secondstage_regression.tex", star.cutoffs = c(0.05, 0.01, 0.001))
 
 ## create plot of brand coefficients
 model_coef <- tidy(model_1_2) %>% 
@@ -160,3 +160,4 @@ height <- width * 0.65  # maintain aspect ratio of 4:5
 
 # save file to output location
 ggsave("../../paper/graphs/error_plot.png", width = width, height = height, dpi = 300)
+
