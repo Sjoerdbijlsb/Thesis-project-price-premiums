@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Open the output CSV file and write the header row
-output_file_path = f'../../data/productlist{time.strftime("%Y%m%d")}.csv'
+output_file_path = f'../../data/productlist20230501.csv'
 
 # specify the sample of the 20k most popular liste  (n = total sample. If you want to randomly sample 1000 apparel products and 1000  sneakers -> n = 2000)
 n = 2000
