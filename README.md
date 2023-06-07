@@ -20,13 +20,12 @@ The set up of the files in this project are as follows:
 
 ```
 
-# Data [(direct link to data)](https://drive.google.com/drive/u/0/folders/1HfVG22n4h4il92tmDk6Abf5qtocoBxyZ)
-
+# Data 
 
 ![Product recommendations on GOAT](img/facts_example_2.png)
 
 
-## Dataset desription
+## Dataset desription [(direct link to data)](https://drive.google.com/drive/u/0/folders/1HfVG22n4h4il92tmDk6Abf5qtocoBxyZ)
 
 ```
 (1) recinfo_2023-05-02.csv
@@ -70,23 +69,23 @@ install.packages("vtable")
 ```
 To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/)
 
-If make and R are set up properly, you should be able to run the project by:
+**If make and R are set up properly, you should be able to run the project in the following manner:**
 
--Fork this repository to your own Github account.
 -Clone the forked repository onto your local machine using the following command:
 ```
-git clone https://github.com/<your-username>/<repo-name>.git
+git clone https://github.com/<your-username>/Thesis-project-price-premiums.git
 ```
-- In your 
+- In your local repository navigate to the base level of this
 ```
-cd <repo-name>
+cd <yourpath/Thesis-project-price-premiums>
 ```
 - Run make
-
+```
+make
+```
 
 # Gather new data
-In case you want to gather the data from scratch, you can make use of the scrapers in the repository. Unfortunately, not everything can be run in one scraper. The biggest reason is that during the project, more endpoints were needed to obtain more data. The 
-
+In case you want to gather the data from scratch, you can make use of the scrapers in the repository. Unfortunately, not everything can be run in one scraper. The biggest reason is that during the project, more endpoints were needed to obtain more data. To arrive at the dataset
 
 ```
 (1) Goat_assortment_api.py
