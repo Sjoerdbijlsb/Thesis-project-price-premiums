@@ -7,7 +7,7 @@ most popular and revenue-generating items due to popularity bias, this is worth 
 
 
 # Repository overview
-The set up of the files in this project are as follows:
+- The set up of the files in this project are as follows:
 ```
 ├── img
 ├── data
@@ -57,9 +57,7 @@ The set up of the files in this project are as follows:
 
 
 # Run study with the same data
-If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm).
-
-To set up make, this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/automation-and-workflows/make/)
+If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm). To set up make, this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/automation-and-workflows/make/)
 
 ## Check dependencies first
 
@@ -77,7 +75,7 @@ To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/
 
 **If make and R are set up properly, you should be able to run the project in the following manner:**
 
--Clone the forked repository onto your local machine using the following command:
+- Clone the forked repository onto your local machine using the following command:
 ```
 git clone https://github.com/<your-username>/Thesis-project-price-premiums.git
 ```
@@ -93,7 +91,7 @@ make
 # Gather new data
 In case you want to gather the data from scratch, you can make use of the scrapers in the repository based on Python. The scrapers contact the API endpoints and either make direct requests or use a webdriver to obtain primarily product recommendations and  recent purchase data from GOAT. Unfortunately, not everything can be run in one scraper. The biggest reason is that during the project, more endpoints were needed to obtain more data. 
 
-Descriptions of each file:
+- Descriptions of each file:
 ```
 (1) Goat_assortment_api.py
 -Grabs the number of products per brand (quick summary only) (output corresponds to file 5 in dataset description)
@@ -108,10 +106,10 @@ Descriptions of each file:
 - Main scraper for recommendations fo (output corresponds to file 1 in dataset description)
 
 (5) Goat_recent_purchases.py
--  Collects recent purchases of recommended items (output corresponds to file 2 in dataset description)
+- Collects recent purchases of recommended items (output corresponds to file 2 in dataset description)
 
 ```
-To arrive at the datasets as in the datafile, the scrapers should be run in the above order. When given the right input for a scraper (usually product ID) it is of course also possible to run them and use the outputs independently. 
+- To arrive at the datasets as in the datafile, the scrapers should be run in the above order. When given the right input for a scraper (usually product ID) it is of course also possible to run them and use the outputs independently. 
 
 *Note: For scraper 3 you need a key matching your browser sesssion. 
 
