@@ -70,6 +70,9 @@ install.packages("stringr")
 install.packages("lubridate")
 install.packages("xtable")
 install.packages("vtable")
+install.packages("car")
+install.packages("stargazer")
+install.packages("broom")
 ```
 To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/)
 
