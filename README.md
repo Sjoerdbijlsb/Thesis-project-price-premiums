@@ -51,10 +51,11 @@ The set up of the files in this project are as follows:
 # Run study with the same data
 If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm).
 
+To set up make, this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/automation-and-workflows/make/)
 
 ## Check dependencies first
 
-First insall the following packages for R:
+First intsall the following packages for R:
 ```
 install.packages("tidyverse")
 install.packages("googledrive")
@@ -65,12 +66,28 @@ install.packages("lubridate")
 install.packages("xtable")
 install.packages("vtable")
 ```
+To set up R  this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/)
 
 # Gather new data
 In case you want to gather the data from scratch, you can make use of the scrapers in this file.
 
-
-
+```
+(1)
+-
+-
+(2)
+-
+-
+(3)
+-
+-
+(4)
+-
+-
+(5)
+-
+-
+```
 
 
 # Contact
