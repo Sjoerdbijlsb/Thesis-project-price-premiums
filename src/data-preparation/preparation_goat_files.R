@@ -19,8 +19,6 @@ rec_focal_connection_df <-df_list_preparation[[2]]
 sales_list <- df_list_preparation[[3]]
 
 # read in assortment size lists instantly 
-apparel_count_list <- read_csv("../../data/output_list_counts_apparel20230508.csv")
-sneakers_count_list <- read_csv("../../data/output_list_counts_sneakers20230508.csv")
 all_count_list <- read_csv("../../data/output_list_counts_all20230508.csv")
 
 
