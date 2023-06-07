@@ -81,7 +81,7 @@ To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/
 ```
 git clone https://github.com/<your-username>/Thesis-project-price-premiums.git
 ```
-- In your local repository navigate to the base level of this
+- In your local repository navigate to the base level of this repository
 ```
 cd <yourpath/Thesis-project-price-premiums>
 ```
@@ -96,23 +96,22 @@ In case you want to gather the data from scratch, you can make use of the scrape
 Descriptions of each file:
 ```
 (1) Goat_assortment_api.py
--
--
-(2) Goat_recent_purchases.py
--
--
-(3) Goat_recommendation_scraper.py
--
--
-(4) Goat_sample.py
--
--
-(5) Goat_search_group_counts.py
--
--
-```
-To arrive at the datasets as 
+-Grabs the number of products per brand (quick summary only) (output corresponds to file 5 in dataset description)
 
+(2) Goat_search_group_counts.py
+-Obtains the product pages where the recommendations are found, or to collect items from top 10,000 products (output corresponds to file 3 & 4 in dataset description)
+
+(3) Goat_sample.py
+- (optional) is used to draw a sample from the collected product pages.
+
+(4) Goat_recommendation_scraper.py
+- Main scraper for recommendations fo (output corresponds to file 1 in dataset description)
+
+(5) Goat_recent_purchases.py
+-  Collects recent purchases of recommended items (output corresponds to file 2 in dataset description)
+
+```
+To arrive at the datasets as in the datafile, the scrapers should be run in the above order. When given the right input for a scraper (usually product ID) it is of course also possible to run them and use the outputs independently. 
 
 *Note: For scraper 3 you need a key matching your browser sesssion. 
 
