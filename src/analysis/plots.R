@@ -2,7 +2,6 @@
 library(lubridate)
 library(xtable)
 library(tidyverse)
-library(viridis)
 
 # Set up file_list of files in the directory
 file_list1 <- c("../../gen/temp/focal_products_only_df_cleaned_merged.rds", "../../gen/temp/recommendations.rds")
