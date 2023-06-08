@@ -1,4 +1,4 @@
-# Online Boutique stores: what what factors drive product recommendations in limited-edition resale markets?
+# Online Boutique stores: what factors drive product recommendations in limited-edition resale markets?
 
 This repository accompanies my thesis that investigates product recommendations in the thriving fashion resale market. The platform uses product recommendations and recent 
 product purchases from [GOAT](https://www.goat.com/), one of the biggest resale platforms in this industry. Because product recommendations are often said to present the 
@@ -106,7 +106,7 @@ In case you want to gather the data from scratch, you can make use of the scrape
 - (optional) is used to draw a sample from the collected product pages.
 
 (4) Goat_recommendation_scraper.py
-- Main scraper for recommendations fo (output corresponds to file 1 in dataset description)
+- Main scraper for recommendations (output corresponds to file 1 in dataset description)
 
 (5) Goat_recent_purchases.py
 - Collects recent purchases of recommended items (output corresponds to file 2 in dataset description)
@@ -114,7 +114,7 @@ In case you want to gather the data from scratch, you can make use of the scrape
 ```
 - To arrive at the datasets as in the datafile, the scrapers should be run in the above order. When given the right input for a scraper (usually product ID) it is of course also possible to run them and use the outputs independently. 
 
-*Note: For scraper 3 you need a key matching your browser sesssion. 
+*Note: For scraper 4 you need a key matching your browser sesssion. 
 
 # Contact
 s.bijl_1@tilburguniversity.edu
