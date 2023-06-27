@@ -1,13 +1,13 @@
 # Online Boutique stores: what factors drive product recommendations in limited-edition resale markets?
 
-This repository accompanies my thesis that investigates product recommendations in the thriving fashion resale market. The platform uses product recommendations and recent 
+This repository accompanies my thesis which investigates product recommendations in the thriving fashion resale market. The study uses product recommendations and recent 
 product purchases from [GOAT](https://www.goat.com/), one of the biggest resale platforms in this industry. Because product recommendations are often said to present the 
-most popular and revenue-generating items due to popularity bias, this is worth to be examined in this industry where rare and exclusive items play an important role for consumers shopping. The main constructs used in the study are product revenue an item attains through sales, and recommendation count (the number of times a product is recommended on the platform). 
+most popular and revenue-generating items due to popularity bias, this is worth to be examined in this industry where rare and exclusive items play an important role for consumers. The main constructs used in the study are product revenue an item attains through sales, and recommendation count (the number of times a product is recommended on the platform). 
 
 
 
 # Repository overview
-- The set up of the files in this project are as follows:
+- The setup of the files in this project is as follows:
 ```
 ├── img
 ├── data
