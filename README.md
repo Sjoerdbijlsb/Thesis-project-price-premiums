@@ -114,7 +114,7 @@ In case you want to gather the data from scratch, you can make use of the scrape
 ```
 - To arrive at the datasets as in the datafile, the scrapers should be run in the above order. When given the right input for a scraper (usually product ID) it is of course also possible to run them and use the outputs independently. 
 
-*Note: For scraper 4 you need a key matching your browser sesssion. 
+*Note: For scraper 4 you need a key matching your browser sesssion. Send me a msg
 
 # Contact
 s.bijl_1@tilburguniversity.edu
