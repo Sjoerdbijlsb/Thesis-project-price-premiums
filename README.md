@@ -117,4 +117,4 @@ In case you want to gather the data from scratch, you can make use of the scrape
 *Note: For scraper 4 you need a key matching your browser sesssion. Send me a msg
 
 # Contact
-s.bijl_1@tilburguniversity.edu
+sjoerdbijl.sb@gmail.com
