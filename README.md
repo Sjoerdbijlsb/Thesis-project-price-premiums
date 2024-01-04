@@ -57,7 +57,7 @@ most popular and revenue-generating items due to popularity bias, this is worth 
 
 
 # Run study with the same data
-If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm). To set up make, this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/automation-and-workflows/make/)
+If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm). To set up make, this is a helpful [guide](https://tilburgsciencehub.com/topics/automation/automation-tools/makefiles/what-are-makefiles/)
 
 ## Check dependencies first
 
