@@ -59,6 +59,7 @@ most popular and revenue-generating items due to popularity bias, this is worth 
 # Run study with the same data
 If you want to replicate the study I did, it is suggested you run the same R files. This can be done easily if you have installed [make](https://gnuwin32.sourceforge.net/packages/make.htm). To set up make, this is a helpful [guide](https://tilburgsciencehub.com/topics/automation/automation-tools/makefiles/what-are-makefiles/)
 
+
 ## Check dependencies first
 
 First install the following packages for R:
@@ -74,7 +75,7 @@ install.packages("car")
 install.packages("stargazer")
 install.packages("broom")
 ```
-To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/building-blocks/configure-your-computer/statistics-and-computation/r/)
+To install and set up R this is a helpful [guide](https://tilburgsciencehub.com/topics/computer-setup/software-installation/rstudio/r/)
 
 **If make and R are set up properly, you should be able to run the project in the following manner:**
 
